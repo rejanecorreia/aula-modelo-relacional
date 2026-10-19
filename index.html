@@ -380,15 +380,19 @@ window.go=function(n){
 async function saveProgress(n){
  if(!participant||!me)return;
  const names={0:'Abertura',1:'Desafio 1',2:'Desafio 2',3:'Conceito central',4:'Desafio 3',5:'Desafio 4',6:'Desafio Caveira',7:'Conclusão'};
- const pts=Number(typeof points!=='undefined'?points:0)||0;
+ const pontosD3=Number(typeof points!=='undefined'?points:0)||0;
+ const pontosCaveira=Number(typeof skPoints!=='undefined'?skPoints:0)||0;
+ const pts=pontosD3+pontosCaveira;
+ const estadoD3={parte:typeof gamePart!=='undefined'?gamePart:'pk',pks:typeof pkFound!=='undefined'?pkFound:0,conexoes:typeof connections!=='undefined'?connections:0};
+ const estadoCaveira={parte:typeof skStep!=='undefined'?skStep:1,campos:typeof skFilled!=='undefined'?skFilled.size:0,pks:typeof skFoundPK!=='undefined'?skFoundPK.size:0,fks:typeof skFoundFK!=='undefined'?skFoundFK.size:0};
  const completed=n===7?[1,2,3,4,5]:(n===6?[1,2,3,4]:n===5?[1,2,3]:n===4?[1,2]:n===3?[1,2]:n===2?[1]:[]);
- try{await updateDoc(personRef(me.uid),{etapa:n,etapaNome:names[n],pontos:pts,concluidos:completed,atualizadoEm:serverTimestamp()})}
+ try{await updateDoc(personRef(me.uid),{etapa:n,etapaNome:names[n],pontos:pts,pontosD3,pontosCaveira,estadoD3,estadoCaveira,concluidos:completed,atualizadoEm:serverTimestamp()})}
  catch(e){say('Falha ao atualizar o progresso: '+(e.code||e.message),true)}
 }
 // Atualiza pontuação e respostas abertas após interações. Não avalia o texto semanticamente.
 document.addEventListener('click',e=>{
  if(!participant||!me)return;
- const target=e.target.closest('button,.gamef,.token,.field');if(!target)return;
+ const target=e.target.closest('button,.gamef,.token,.field,.sk-field,.sk-token');if(!target)return;
  clearTimeout(progressTimer);progressTimer=setTimeout(()=>saveProgress(typeof current!=='undefined'?current:1),850);
 });
 for(const id of ['d2why','why','d4why']){

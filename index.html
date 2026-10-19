@@ -25,6 +25,7 @@
 #d2q .choice.d2-correct { background:#e5f7eb !important; color:#126538 !important; border:2px solid #198754 !important; font-weight:800; }
 #d2q .choice.d2-incorrect { background:#fff0ef !important; color:#a62323 !important; border:2px solid #cf3939 !important; font-weight:750; }
 #d2q .choice.d2-correct:focus-visible, #d2q .choice.d2-incorrect:focus-visible { outline:3px solid #1765c1; outline-offset:2px; }
+.sk-table-divider{border-top:2px solid #cbdff6;margin:22px 0 24px;width:100%;}
 </style>
 <style>
 .relationship-board{position:relative;isolation:isolate}
@@ -119,6 +120,7 @@
 <p style="color:var(--muted);margin:0;font-size:14px">Dica: um mesmo nome de campo pode aparecer em várias tabelas; são atributos distintos.</p></div>
 <div class="card" id="sk-part2" style="display:none;margin-top:20px"><h3>2. Identifique as chaves primárias 🔑</h3><p>Agora que as tabelas estão completas, clique no atributo que <strong>identifica unicamente cada registro</strong>. Encontre uma PK em cada tabela.</p><p id="sk-pkprogress" style="font-weight:800">🔑 0/4 chaves primárias encontradas</p></div>
 <div class="card" id="sk-part3" style="display:none;margin-top:20px"><h3>3. Estabeleça os relacionamentos 🔗</h3><p>Selecione primeiro uma <strong>FK</strong> em EMPRESTIMOS ou RESERVAS e depois a <strong>PK correspondente</strong> em LEITORES ou LIVROS. Faça quatro conexões.</p><p id="sk-fkprogress" style="font-weight:800">🔗 0/4 conexões realizadas</p></div>
+<div class="sk-table-divider" role="separator" aria-label="Separação entre instruções e tabelas"></div>
 <div class="grid2 relationship-board" id="sk-tables">
 <div class="node"><h3>👤 LEITORES</h3><div class="field sk-field sk-slot" data-slot="readerpk" role="button" tabindex="0">❔ Campo ausente</div><div class="field sk-field" data-col="readernome">NOME</div></div>
 <div class="node"><h3>📕 LIVROS</h3><div class="field sk-field sk-slot" data-slot="bookpk" role="button" tabindex="0">❔ Campo ausente</div><div class="field sk-field" data-col="booktitle">TITULO</div></div>
@@ -336,17 +338,39 @@ window.addEventListener('load',relSchedule);
 const originalGo=go;go=function(n){originalGo(n);relSchedule()};
 </script><script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js';
-import {getAuth,signInAnonymously,onAuthStateChanged,setPersistence,browserLocalPersistence} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';
-import {getFirestore,doc,getDoc,writeBatch,updateDoc,serverTimestamp} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js';
+import {getAuth,signInAnonymously,onAuthStateChanged,setPersistence,browserLocalPersistence,signOut} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';
+import {getFirestore,doc,getDoc,onSnapshot,writeBatch,updateDoc,serverTimestamp} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js';
 const firebaseConfig={apiKey:"AIzaSyBjH-rr1UPZGqPZkc7SbiWtGWwbdHsd6gY",authDomain:"aula-modelo-relacional.firebaseapp.com",projectId:"aula-modelo-relacional",storageBucket:"aula-modelo-relacional.firebasestorage.app",messagingSenderId:"415050196421",appId:"1:415050196421:web:986a11fff095003a2697ac",measurementId:"G-4G9M0XJ2R2"};
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
-let me=null,participant=null,starting=false,progressTimer=null;
+let me=null,participant=null,starting=false,progressTimer=null,participantWatch=null,resettingByTeacher=false;
 const sel=document.getElementById('studentNickname');
 const status=document.getElementById('firebaseStatus');
 const warn=document.getElementById('nameWarn');
 const say=(msg,bad=false)=>{status.textContent=msg;status.style.color=bad?'#b42318':'#155b92'};
 const nickRef=name=>doc(db,'nicknames',name);
 const personRef=uid=>doc(db,'participantes',uid);
+// Observe exclusão do registro pelo painel da professora. O site retorna à abertura
+// e abandona a sessão anônima antiga para uma nova rodada.
+function watchTeacherReset(uid){
+ if(participantWatch){participantWatch();participantWatch=null}
+ let existed=false;
+ participantWatch=onSnapshot(personRef(uid),async snap=>{
+  if(snap.exists()){existed=true;return}
+  if(!existed||resettingByTeacher)return;
+  resettingByTeacher=true;
+  clearTimeout(progressTimer);
+  participant=null;
+  try{
+   sessionStorage.removeItem('investigador_nickname');
+   sessionStorage.removeItem('investigacao_d2_justificativa');
+   sessionStorage.removeItem('investigacao_d4_justificativa');
+  }catch(e){}
+  try{await signOut(auth)}catch(e){}
+  alert('A professora reiniciou a turma. Todos os desafios foram zerados. Escolha novamente um nickname para começar.');
+  location.reload();
+ },err=>say('Não foi possível acompanhar o reinício: '+(err.code||err.message),true));
+}
+
 async function refreshNicknames(){
  if(!me)return;
  const options=[...sel.options].filter(o=>o.value);
@@ -370,7 +394,7 @@ onAuthStateChanged(auth,async user=>{
   if(snap.exists()){
    participant=snap.data();sel.value=participant.nickname;sel.disabled=true;
    sessionStorage.setItem('investigador_nickname',participant.nickname);
-   showNicknameCharacter();say('Personagem reservado: '+participant.nickname+'. Pode continuar a investigação.');
+   showNicknameCharacter();say('Personagem reservado: '+participant.nickname+'. Pode continuar a investigação.');watchTeacherReset(me.uid);
   }else say('Conectado. Escolha um nickname disponível.');
   await refreshNicknames();
  }catch(e){say('Erro ao carregar participante: '+(e.code||e.message),true)}
@@ -387,7 +411,7 @@ window.startInvestigation=async function(){
    batch.set(nickRef(nickname),{uid:me.uid,nickname});
    batch.set(ref,{nickname,etapa:1,etapaNome:'Desafio 1',pontos:0,concluidos:[],criadoEm:serverTimestamp(),atualizadoEm:serverTimestamp()});
    await batch.commit();
-   participant={nickname,etapa:1,pontos:0,concluidos:[]};
+   participant={nickname,etapa:1,pontos:0,concluidos:[]};watchTeacherReset(me.uid);
   }
   sel.value=participant.nickname;sel.disabled=true;
   sessionStorage.setItem('investigador_nickname',participant.nickname);

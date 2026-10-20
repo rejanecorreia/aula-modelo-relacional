@@ -40,6 +40,19 @@
 .sk-current-stage{border-left:5px solid #2583ad!important;box-shadow:0 3px 18px rgba(20,104,151,.12)}
 .sk-stage-guide{margin:0 0 16px;background:#eaf5ff;border:1px solid #b9dcf5;border-radius:13px;padding:12px 16px;color:#174e80;font-weight:750}
 .sk-stage-guide strong{color:#0d416b}
+
+/* Placar final — não altera as regras de pontuação nem o Firebase. */
+.final-scoreboard{max-width:850px;margin:24px auto;text-align:center;border:2px solid #74b5ef;background:linear-gradient(140deg,#f7fcff 0%,#eaf5ff 100%)}
+.final-scoreboard h3{font-size:clamp(22px,3.4vw,32px);margin:8px 0 20px;color:#124f80}
+.final-score-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.final-score-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:#fff;border:1px solid #c7e2f5;border-radius:15px;padding:16px 10px;color:#194a6b}
+.final-score-item span{font-size:14px;font-weight:800}
+.final-score-item strong{font-size:clamp(27px,5vw,44px);line-height:1.1;color:#1260a4;font-variant-numeric:tabular-nums}
+.final-score-item small{color:#586a7c}
+.final-score-total{background:#155987;color:#fff;border-color:#155987}
+.final-score-total strong,.final-score-total small{color:#fff}
+.final-score-note{font-size:13px;color:#596a7d;margin:16px 0 0}
+@media(max-width:650px){.final-score-grid{grid-template-columns:1fr}.final-score-item{padding:12px}}
 </style>
 <style>
 .relationship-board{position:relative;isolation:isolate}
@@ -215,7 +228,17 @@ body{background:radial-gradient(circle at 92% 2%,rgba(83,221,249,.20),transparen
 <div class="actions"><button class="cta secondary" onclick="skReset()">↺ Recomeçar missão</button><button class="cta" id="bnext" onclick="go(7)" style="display:none">Concluir aula →</button></div>
 
 </div></section>
-<section class="screen" id="s7"><div class="wrap final"><div><div class="eyebrow">MISSÃO CONCLUÍDA</div><h2>🏁 Você construiu a conexão.</h2><p class="path">🔎 DESCOBRIR ✓ → 📚 INVESTIGAR ✓ → 🎮 APLICAR ✓ → 🤖 ANALISAR ✓ → 💀 CRIAR ✓</p><div class="card" style="text-align:left;margin:22px auto;max-width:850px"><h3>🎯 Onde chegamos?</h3><p>Você praticou a identificação e o uso de chaves primárias e estrangeiras para estabelecer relacionamentos entre tabelas.</p><p>Ao longo dos desafios, encontrou registros correspondentes, verificou referências, corrigiu uma modelagem e construiu um esquema de biblioteca. Confira o que conseguiu justificar e refazer sem ajuda.</p></div><p style="font-size:21px;max-width:850px;margin:20px auto;color:var(--muted)">Chaves primárias e estrangeiras não são apenas atributos isolados: elas permitem estabelecer relações entre informações armazenadas em tabelas diferentes.</p><div class="card homework" id="tarefa-proxima-aula"><h3>📚 Missão para a próxima aula — O livro voltou?</h3>
+<section class="screen" id="s7"><div class="wrap final"><div><div class="eyebrow">MISSÃO CONCLUÍDA</div><h2>🏁 Você construiu a conexão.</h2><p class="path">🔎 DESCOBRIR ✓ → 📚 INVESTIGAR ✓ → 🎮 APLICAR ✓ → 🤖 ANALISAR ✓ → 💀 CRIAR ✓</p><div class="card final-scoreboard" id="final-scoreboard" role="status" aria-live="polite">
+  <div class="eyebrow">🏆 PLACAR DA INVESTIGAÇÃO</div>
+  <h3 id="final-player-heading">Sua pontuação final</h3>
+  <div class="final-score-grid">
+    <div class="final-score-item"><span>🎮 Banco Desconectado</span><strong id="final-d3-points">0</strong><small>pontos</small></div>
+    <div class="final-score-item"><span>💀 Desafio Caveira</span><strong id="final-caveira-points">0</strong><small>pontos</small></div>
+    <div class="final-score-item final-score-total"><span>🏆 TOTAL CONQUISTADO</span><strong id="final-total-points">0</strong><small>pontos</small></div>
+  </div>
+  <p class="final-score-note">Os Desafios 1, 2 e 4 também fazem parte da conquista, mas não possuem pontuação numérica.</p>
+</div>
+<div class="card" style="text-align:left;margin:22px auto;max-width:850px"><h3>🎯 Onde chegamos?</h3><p>Você praticou a identificação e o uso de chaves primárias e estrangeiras para estabelecer relacionamentos entre tabelas.</p><p>Ao longo dos desafios, encontrou registros correspondentes, verificou referências, corrigiu uma modelagem e construiu um esquema de biblioteca. Confira o que conseguiu justificar e refazer sem ajuda.</p></div><p style="font-size:21px;max-width:850px;margin:20px auto;color:var(--muted)">Chaves primárias e estrangeiras não são apenas atributos isolados: elas permitem estabelecer relações entre informações armazenadas em tabelas diferentes.</p><div class="card homework" id="tarefa-proxima-aula"><h3>📚 Missão para a próxima aula — O livro voltou?</h3>
 <p><strong>O desafio continua!</strong> A biblioteca agora precisa registrar a devolução dos livros. Amplie o modelo que você construiu no Desafio Caveira.</p>
 <p><strong>🎯 Próximo nível — Criar:</strong> utilize o que aprendeu sobre chaves e relacionamentos para projetar uma solução sua. Você vai aplicar e analisar os conceitos, avaliar se o modelo funciona e <strong>criar</strong> uma nova parte do banco de dados.</p>
 <p><strong>Para a próxima aula:</strong> traga o modelo pronto. Vamos comparar as soluções da turma e aprofundar cardinalidade, integridade referencial e consultas para descobrir quais empréstimos continuam em aberto.</p>
@@ -254,7 +277,17 @@ document.getElementById('studentNickname').addEventListener('change',showNicknam
 function startInvestigation(){const field=document.getElementById('studentNickname');const name=field.value;if(!name){document.getElementById('nameWarn').style.display='block';field.focus();return}document.getElementById('nameWarn').style.display='none';try{sessionStorage.setItem('investigador_nickname',name)}catch(e){}go(1)}
 (function restoreNickname(){try{const name=sessionStorage.getItem('investigador_nickname');if(name){const field=document.getElementById('studentNickname');if([...field.options].some(o=>o.value===name))field.value=name}}catch(e){}showNicknameCharacter()})();
 function updateNicknameHeader(n){const badge=document.getElementById('nicknameTop');let name='';try{name=sessionStorage.getItem('investigador_nickname')||''}catch(e){}if(!name)name=document.getElementById('studentNickname').value;const data=nicknameCharacters[name];badge.classList.toggle('visible',n>0&&!!data);if(data){document.getElementById('nicknameTopEmoji').textContent=data[0];document.getElementById('nicknameTopName').textContent=name;badge.title=name+' — '+data[1]}}
-function go(n){document.querySelector('.screen.active').classList.remove('active');document.getElementById('s'+n).classList.add('active');current=n;window.scrollTo({top:0,behavior:'smooth'});document.getElementById('bar').style.width=(n/7*100)+'%';document.getElementById('stepnum').textContent=n===0?'Abertura':n===3?'Conceito':n===7?'Conclusão':'Etapa '+n+' de 6';updateNicknameHeader(n)}
+function showFinalScore(){
+  const d3=Math.max(0,Number(points)||0);
+  const caveira=Math.max(0,Number(skPoints)||0);
+  document.getElementById('final-d3-points').textContent=d3.toLocaleString('pt-BR');
+  document.getElementById('final-caveira-points').textContent=caveira.toLocaleString('pt-BR');
+  document.getElementById('final-total-points').textContent=(d3+caveira).toLocaleString('pt-BR');
+  const nick=document.getElementById('studentNickname').value;
+  const person=nicknameCharacters[nick];
+  document.getElementById('final-player-heading').textContent=person?(person[0]+' '+nick+' — sua pontuação final'):'Sua pontuação final';
+}
+function go(n){document.querySelector('.screen.active').classList.remove('active');document.getElementById('s'+n).classList.add('active');current=n;window.scrollTo({top:0,behavior:'smooth'});document.getElementById('bar').style.width=(n/7*100)+'%';document.getElementById('stepnum').textContent=n===0?'Abertura':n===3?'Conceito':n===7?'Conclusão':'Etapa '+n+' de 6';updateNicknameHeader(n);if(n===7)showFinalScore()}
 document.querySelectorAll('.d1c').forEach(el=>el.onclick=()=>{document.querySelectorAll('.d1c').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');d1sel=el.dataset.v});
 document.querySelectorAll('.d1o').forEach(el=>el.onclick=()=>{if(!d1sel)return;if(el.dataset.v===d1sel && d1sel==='111.111.111-11'){document.querySelectorAll('[data-v="111.111.111-11"]').forEach(x=>x.classList.add('correct'));document.getElementById('d1ok').classList.add('show');document.getElementById('d1no').classList.remove('show');document.getElementById('d1next').style.display='inline-flex'}else{document.getElementById('d1no').classList.add('show')}});
 let d2Correct=false;

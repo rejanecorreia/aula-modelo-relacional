@@ -8,7 +8,8 @@
 @media(max-width:800px){.intro-start{align-items:stretch}.intro-start .cta{width:100%}}
 
 /* Desafio 3: PK revelada apenas após acerto */
-.gamef.discovered-pk:not(.linked){background:#e6f2ff!important;color:#174d92;font-weight:850}
+.gamef.discovered-pk, .gamef.discovered-pk.linked{background:#fff!important;color:var(--ink)!important;font-weight:800!important}
+.gamef.discovered-pk:hover{background:#edf7fc!important}
 .gamef.discovered-pk::after{content:' 🔑';}
 .gamef.linked{background:#eaf7f0!important;font-weight:850}
 
@@ -26,6 +27,19 @@
 #d2q .choice.d2-incorrect { background:#fff0ef !important; color:#a62323 !important; border:2px solid #cf3939 !important; font-weight:750; }
 #d2q .choice.d2-correct:focus-visible, #d2q .choice.d2-incorrect:focus-visible { outline:3px solid #1765c1; outline-offset:2px; }
 .sk-table-divider{border-top:2px solid #cbdff6;margin:22px 0 24px;width:100%;}
+
+/* Desafio Caveira: transições explícitas, sem mudança automática de tarefa */
+.sk-transition-backdrop{position:fixed;inset:0;z-index:9999;background:rgba(5,24,51,.78);display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(5px)}
+.sk-transition-backdrop.show{display:flex}
+.sk-transition-card{width:min(560px,100%);background:#fff;border:3px solid #38bdf8;border-radius:24px;padding:clamp(22px,4vw,38px);box-shadow:0 26px 80px rgba(0,0,0,.38);text-align:center;color:#193653}
+.sk-transition-card .sk-confetti{font-size:43px;margin-bottom:8px}
+.sk-transition-card h2{font-size:clamp(23px,4vw,34px);line-height:1.15;margin:8px 0 12px;color:#145b96}
+.sk-transition-card .sk-next-name{display:block;background:#eaf5ff;border:1px solid #b9dcf5;border-radius:14px;padding:14px;margin:14px 0;font-size:20px;font-weight:850}
+.sk-transition-card p{line-height:1.5;margin:10px 0}
+.sk-transition-card .cta{width:100%;margin-top:12px;font-size:17px;padding:16px}
+.sk-current-stage{border-left:5px solid #2583ad!important;box-shadow:0 3px 18px rgba(20,104,151,.12)}
+.sk-stage-guide{margin:0 0 16px;background:#eaf5ff;border:1px solid #b9dcf5;border-radius:13px;padding:12px 16px;color:#174e80;font-weight:750}
+.sk-stage-guide strong{color:#0d416b}
 </style>
 <style>
 .relationship-board{position:relative;isolation:isolate}
@@ -36,7 +50,53 @@
 .homework li{margin:8px 0}
 @media(max-width:800px){.relationship-board > .rel-overlay{z-index:7}}
 </style>
-</head><body><div class="app"><div class="top"><div class="topin"><div class="brand">Banco de Dados</div><div class="progress"><div class="bar" id="bar"></div></div><div class="stepnum" id="stepnum">Abertura</div><div aria-label="Seu personagem" class="nickname-top" id="nicknameTop" title="Nickname escolhido"><span class="nick-emoji" id="nicknameTopEmoji"></span><span id="nicknameTopName"></span></div></div></div>
+<style id="tema-laboratorio-conexoes">
+
+/* IDENTIDADE VISUAL: Laboratório das Conexões — somente apresentação */
+:root{--bg:#f3f8ff;--ink:#17304b;--muted:#56718c;--line:#d7e5f5;--accent:#176fc2;--accent2:#16b8d7;--shadow:0 14px 35px rgba(20,65,124,.095)}
+body{background:radial-gradient(circle at 92% 2%,rgba(83,221,249,.20),transparent 420px),radial-gradient(circle at 0% 36%,rgba(167,143,255,.12),transparent 440px),#f3f8ff}
+.top{background:rgba(248,251,255,.95);border-bottom:1px solid #cbdff3;box-shadow:0 3px 16px rgba(14,55,115,.045)}
+.top .brand{color:#13549c;letter-spacing:.01em}.progress{height:10px;background:#dceafa;border:1px solid #c9e0f6}.bar{background:linear-gradient(90deg,#1682d5,#16c7db,#9c78ef);box-shadow:0 0 12px rgba(22,167,215,.35)}
+.screen{position:relative}.screen .wrap{position:relative}
+.screen .sectionhead{border-radius:25px;padding:23px clamp(20px,3.8vw,37px);color:#fff;background:linear-gradient(113deg,#123f79,#135f9c 66%,#168cc0);box-shadow:0 17px 30px rgba(19,74,139,.14);position:relative;overflow:hidden}
+.screen .sectionhead::after{content:'✦  ◇  ✧';position:absolute;right:27px;top:17px;font-size:37px;color:rgba(255,255,255,.18);letter-spacing:15px;pointer-events:none;transform:rotate(-12deg)}
+.screen .sectionhead .eyebrow{color:#8ff0ff;position:relative;z-index:1}.screen .sectionhead h2{color:white;font-size:clamp(30px,4vw,51px);line-height:1.12;position:relative;z-index:1}.screen .sectionhead .subtitle{color:#e0f4ff;position:relative;z-index:1}
+#s2 .sectionhead{background:linear-gradient(110deg,#214780,#397cb4 72%,#2b9ba8)}
+#s3 .sectionhead{background:linear-gradient(110deg,#205c94,#188fba)}
+#s4 .sectionhead{background:linear-gradient(110deg,#173d88,#385bc5 70%,#7370cd)}
+#s5 .sectionhead{background:linear-gradient(110deg,#174c80,#3468b7 66%,#7068cb)}
+#s6 .sectionhead{background:linear-gradient(110deg,#172658,#373c9c 62%,#7140bc);border:1px solid #7b76e8;box-shadow:0 18px 34px rgba(51,48,145,.22)}
+#s6 .sectionhead::after{content:'💀  ✦';font-size:58px;right:26px;top:13px;color:rgba(255,255,255,.28)}
+#s0 .intro-wrap{position:relative}#s0 .intro-wrap>.eyebrow{display:inline-flex;padding:9px 15px;margin-top:8px;background:#104b86;border-radius:999px;color:#a7f3ff;letter-spacing:.08em;font-size:12px;box-shadow:0 7px 20px rgba(17,75,134,.15)}
+#s0 h1{background:linear-gradient(110deg,#123d7e,#187ac2 67%,#12a9c2);background-clip:text;-webkit-background-clip:text;color:transparent;line-height:1.12;padding-top:4px}
+#s0 .intro-question{color:#366587;font-weight:600}
+#s0 .intro-wrap::before{content:'🔑   🔗   💾';position:absolute;right:0;top:4px;padding:10px 16px;border:1px solid #c5e5f6;background:#ffffffde;border-radius:20px;box-shadow:var(--shadow);letter-spacing:6px;transform:rotate(3deg);pointer-events:none}
+.intro-card,.card,.sourcebox,.node{border-color:#d6e5f4;box-shadow:var(--shadow)}
+.intro-card{border-radius:24px;background:linear-gradient(180deg,#fff,#fbfdff)}
+.intro-objective{background:#f0f8ff!important;border-left-color:#198cdb!important}
+.intro-card h3,.card h3{color:#154d85}
+.journey .pill,.pill,.hud{background:linear-gradient(180deg,#fff,#f0f8ff);border:1px solid #cde3f7;box-shadow:0 3px 8px rgba(17,81,140,.06)}
+.mission{border:1px solid #bcdcf6;border-left:5px solid #1681d0;background:linear-gradient(110deg,#eaf7ff,#f1f7ff);border-radius:19px;line-height:1.55}
+#s6 .mission{border-left-color:#7855c8;background:linear-gradient(105deg,#f1f0ff,#edf8ff)}
+.cta{background:linear-gradient(110deg,#176ac2,#169aca);box-shadow:0 8px 18px rgba(21,111,186,.22);transition:transform .16s ease,box-shadow .16s ease,filter .16s ease}
+.cta:hover{transform:translateY(-2px);box-shadow:0 12px 25px rgba(21,111,186,.26);filter:brightness(1.05)}
+.cta:focus-visible,.choice:focus-visible,.token:focus-visible,.field:focus-visible{outline:3px solid #f4bb4f;outline-offset:3px}
+.choice,.token{transition:transform .15s,border-color .15s,box-shadow .15s}.choice:hover,.token:hover{transform:translateY(-1px);border-color:#399cdb;box-shadow:0 5px 13px rgba(32,115,191,.10)}
+.node h3{background:linear-gradient(105deg,#16466d,#1b679a);letter-spacing:.025em}
+.node .field{background:#fff}.node .field.pk:not(.selected):not(.linked){background:#fff!important}
+.gamehud{gap:8px}.hud{color:#1b527b}
+.dbtable th{background:#e9f4ff;color:#215e92}.dbtable tr:hover td{background:#f6fbff}
+.feedback.ok{border-left:5px solid #1a9d6a}.feedback.no{border-left:5px solid #d66b61}
+.aiquote{background:linear-gradient(115deg,#163c76,#3a5fb0);box-shadow:0 8px 24px rgba(34,66,128,.14)}
+.final{background:radial-gradient(circle at 50% 8%,rgba(115,215,242,.15),transparent 50%)}
+.final h2{color:#155996}.final .path{color:#375fa1}
+.ped details{background:#fff;border-color:#d4e5f5}
+@keyframes floatBadge{0%,100%{transform:translateY(0) rotate(3deg)}50%{transform:translateY(-5px) rotate(2deg)}}
+@media(min-width:850px){#s0 .intro-wrap::before{animation:floatBadge 5s ease-in-out infinite}}
+@media(max-width:760px){#s0 .intro-wrap::before{display:none}.screen .sectionhead{padding:20px 18px}.screen .sectionhead::after{opacity:.3;right:5px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+</style></head><body><div class="app"><div class="top"><div class="topin"><div class="brand">Banco de Dados</div><div class="progress"><div class="bar" id="bar"></div></div><div class="stepnum" id="stepnum">Abertura</div><div aria-label="Seu personagem" class="nickname-top" id="nicknameTop" title="Nickname escolhido"><span class="nick-emoji" id="nicknameTopEmoji"></span><span id="nicknameTopName"></span></div></div></div>
 <section class="screen active" id="s0"><div class="intro-wrap"><div class="eyebrow">BANCO DE DADOS · AULA INTERATIVA</div><h1>Modelo Relacional: Chaves e Integridade Referencial</h1><p class="intro-question">Como as tabelas se conectam para representar informações?</p><div class="intro-card"><div class="intro-objective"><strong>Objetivo da disciplina Banco de Dados</strong>Compreender como organizar, modelar e manipular dados.</div><div class="intro-objective"><strong>Objetivo da aula</strong>Identificar chaves primárias e estrangeiras e explicar como elas conectam tabelas e mantêm referências válidas.</div><div class="intro-objective"><strong>🎯 Onde queremos chegar?</strong>Ao final da aula, o estudante será capaz de <strong>identificar e utilizar chaves primárias e estrangeiras para estabelecer relacionamentos entre tabelas.</strong></div></div><div class="intro-card"><h3>Dinâmica dos desafios</h3><p>Vocês participarão de uma investigação com cinco desafios conectados. Cada estudante poderá avançar no próprio ritmo, responder, justificar suas escolhas e receber uma devolutiva após cada etapa.</p><p><strong>Como funciona:</strong> observe, investigue, aplique, analise e crie. A última missão será o <strong>Desafio Caveira 💀</strong>. Iremos acompanhar o progresso da turma para orientar as dificuldades.</p><p>Vocês acompanham todas as etapas neste mesmo site.</p></div><div class="intro-card"><h3>Referências científicas</h3><ul class="intro-sources"><li>Elmasri &amp; Navathe — <em>Fundamentals of Database Systems</em>, 7th ed.</li><li>Silberschatz, Korth &amp; Sudarshan — <em>Database System Concepts</em>, 7th ed.</li><li>Adrienne Watt e Nelson Eng — <em>Database Design</em>, 2ª edição, capítulos 7 e 9.</li></ul></div><p class="intro-invite"><strong>Existe uma conexão escondida nos dados.</strong> Você consegue encontrá-la?</p><div class="intro-card intro-start"><div><h2>Pronto para investigar?</h2><label class="intro-name" for="studentNickname">Escolha seu nickname<select aria-describedby="nicknameInfo" id="studentNickname" required=""><option value="">Selecione um nickname...</option><option value="Column">📊 Column — Aquela que guarda cada detalhe!</option><option value="Field">🧩 Field — A peça que completa a informação!</option><option value="Table">🗂️ Table — Aquela que organiza a turma toda!</option><option value="Row">📏 Row — Sempre na linha!</option><option value="Record">📋 Record — Aquele que registra tudo!</option><option value="PrimaryKey">🔑 PrimaryKey — A única que abre a porta certa!</option><option value="ForeignKey">🔗 ForeignKey — Aquela que conecta todo mundo!</option><option value="Index">⚡ Index — Aquele que encontra tudo rapidinho!</option><option value="Query">🕵️ Query — Aquela que vive fazendo perguntas!</option><option value="Select">👀 Select — Aquela que escolhe o que importa!</option><option value="Insert">➕ Insert — Aquela que sempre traz novidades!</option><option value="Update">🔄 Update — Aquela que vive se reinventando!</option><option value="Delete">🧹 Delete — Aquela que limpa tudo!</option><option value="Join">🤝 Join — Aquele que junta a galera!</option><option value="InnerJoin">🫂 InnerJoin — Só entra quem combina!</option><option value="LeftJoin">⬅️ LeftJoin — Aquele que nunca abandona os da esquerda!</option><option value="Where">🎯 Where — Aquela que só aceita o que passa no filtro!</option><option value="GroupBy">👥 GroupBy — Aquele que reúne os semelhantes!</option><option value="OrderBy">🏅 OrderBy — Aquele que coloca tudo em ordem!</option><option value="Schema">🏗️ Schema — A arquiteta das informações!</option><option value="Database">🏛️ Database — Aquela que guarda tudo!</option><option value="View">🔭 View — Aquela que mostra só o necessário!</option><option value="Trigger">🚨 Trigger — Aquele que entra em ação na hora certa!</option><option value="Procedure">🛠️ Procedure — Aquela que sabe o passo a passo!</option><option value="Cursor">👉 Cursor — Aquele que vai de um em um!</option><option value="Constraint">🛡️ Constraint — A guardiã das regras!</option><option value="Transaction">💼 Transaction — Aquela do tudo ou nada!</option><option value="Commit">✅ Commit — Aquele que bate o martelo!</option><option value="Rollback">⏪ Rollback — Aquela que desfaz qualquer confusão!</option><option value="Distinct">✨ Distinct — Aquela que não gosta de repetição!</option><option value="Count">🔢 Count — Aquele que conta todo mundo!</option><option value="Sum">➗ Sum — Aquela que soma os esforços!</option><option value="Having">🧐 Having — Aquele que filtra até os grupos!</option><option value="Union">🧲 Union — Aquela que une resultados!</option><option value="Backup">💾 Backup — Aquele que salva o dia!</option><option value="Null">👻 Null — Aquele que ninguém sabe onde está!</option></select></label><p class="nickname-info" id="nicknameInfo">36 personagens inspirados em Banco de Dados. Não é necessário informar seu nome real.</p><div aria-live="polite" class="nickname-character" hidden="" id="nicknameCharacter"><div aria-hidden="true" class="nickname-avatar" id="nicknameAvatar">🧹</div><div><strong id="nicknameTitle"></strong><p id="nicknamePhrase"></p></div></div><p id="firebaseStatus" role="status" style="font-size:13px;color:#155b92;margin-top:10px">Conectando ao Firebase…</p><p id="nameWarn" role="alert" style="display:none;color:var(--bad);font-size:14px">Escolha um nickname para começar.</p></div><button class="cta" onclick="startInvestigation()">Iniciar investigação →</button></div><div class="ped ped-global"><details><summary>🎓 Fundamentação pedagógica da sequência didática</summary>
 <div class="ped-text">
 <h3>Objetivo e alinhamento</h3><p>A sequência tem como objetivo identificar e utilizar chaves primárias e estrangeiras para estabelecer relacionamentos entre tabelas, reconhecendo referências válidas e justificando escolhas de modelagem. As tarefas oferecem evidências observáveis de aprendizagem, além de respostas de múltipla escolha.</p>
@@ -67,8 +127,19 @@
 <div class="actions"><button class="cta" onclick="finishD2()" type="button">Conferir minha resposta →</button></div></div></div></div><div class="feedback ok" id="d2ok"><strong>✅ Isso!</strong> O pedido tenta referenciar um cliente inexistente. A integridade referencial exige uma referência válida.</div><div class="feedback no" id="d2no"><strong>🔎 Volte à evidência.</strong> O que a fonte diz sobre a correspondência entre chave estrangeira e chave primária?</div><div class="actions"><button class="cta" id="d2next" onclick="go(3)" style="display:none">Sistematizar o conceito →</button></div></div></section>
 <section class="screen" id="s3"><div class="wrap"><div class="sectionhead"><div><div class="eyebrow">CONCEITO CENTRAL · SISTEMATIZAR</div><h2>💡 O que você descobriu?</h2><p class="subtitle">Agora damos nome ao mecanismo que você já observou e investigou.</p></div></div><div class="concept"><div class="card"><div class="big"><strong>🔑 Chave Primária — PK</strong></div><p>Identifica unicamente um registro na tabela.</p><code>CUSTOMERS.CUSTOMER_ID</code></div><div class="arrow">→</div><div class="card"><div class="big"><strong>🔗 Chave Estrangeira — FK</strong></div><p>Referencia uma chave de outra tabela e permite estabelecer o relacionamento.</p><code>ORDERS.CUSTOMER_ID</code></div></div><div class="mission"><strong>CUSTOMERS.CUSTOMER_ID (PK)</strong> → <strong>ORDERS.CUSTOMER_ID (FK)</strong><br/>É essa referência que permite identificar a qual cliente cada pedido pertence.</div><div class="actions"><button class="cta" onclick="go(4)">🎮 Aplicar no Banco Desconectado →</button></div></div></section>
 <section class="screen" id="s4"><div class="wrap"><div class="sectionhead"><div><div class="eyebrow">DESAFIO 3 · JOGO EDUCACIONAL — APLICAR</div><h2>🎮 Banco Desconectado</h2><p class="subtitle">Primeiro descubra quem identifica cada registro. Depois reconstrua as conexões entre as tabelas.</p></div></div>
+<div class="sk-stage-guide" id="d3-stage-guide" aria-live="polite">🔑 <strong>PARTE 1 DE 2:</strong> Descubra as quatro chaves primárias. A próxima parte só começa quando você confirmar.</div>
 <div class="gamehud"><span class="hud" id="d3part">🔑 Parte 1 de 2 · Descobrir PK</span><span class="hud" id="conn">🔑 PK encontradas: 0/4</span><span class="hud" id="pts">⭐ Pontos: 0</span><span class="hud" id="lives">❤️ Vidas: 3</span><span class="hud" id="phase">📍 Etapa: 1/4</span></div>
 <div class="mission" id="gameMission"><strong>PARTE 1 — ENCONTRE AS CHAVES PRIMÁRIAS 🔑</strong><p id="gamePrompt" style="margin:8px 0 0">Selecione o atributo que identifica de forma única cada registro da tabela <strong>CUSTOMERS</strong>. Depois avance pelas outras tabelas. Cada acerto vale 25 pontos.</p></div>
+<div class="sk-transition-backdrop" id="d3transition" role="dialog" aria-modal="true" aria-labelledby="d3-transition-title" aria-describedby="d3-transition-desc" aria-hidden="true">
+  <div class="sk-transition-card">
+    <div class="sk-confetti" aria-hidden="true">🎉 🔑 🎉</div>
+    <h2 id="d3-transition-title">✅ PARTE 1 CONCLUÍDA!</h2>
+    <p id="d3-transition-desc">Você identificou as <strong>4 chaves primárias</strong> e ganhou <strong>100 pontos</strong>!</p>
+    <span class="sk-next-name">🔗 PARTE 2 — RESTAURE AS CONEXÕES</span>
+    <p><strong>A regra mudou:</strong> selecione uma chave estrangeira (FK) e depois a chave primária (PK) correspondente. Você pode fazer as <strong>3 conexões em qualquer ordem</strong>. Cada acerto vale 100 pontos.</p>
+    <button type="button" class="cta" id="d3-transition-btn" onclick="startD3Part2()">🔗 Iniciar Parte 2 →</button>
+  </div>
+</div>
 <div class="gameboard relationship-board" id="gameboard">
 <div class="node"><h3>👤 CUSTOMERS</h3><div class="field gamef" data-key="customer" data-table="customers" data-type="pk">CUSTOMER_ID</div><div class="field gamef" data-table="customers" data-type="other">FULL_NAME</div><div class="field gamef" data-table="customers" data-type="other">EMAIL</div></div>
 <div class="node"><h3>🛒 ORDERS</h3><div class="field gamef" data-key="order" data-table="orders" data-type="pk">ORDER_ID</div><div class="field gamef" data-key="customer" data-table="orders" data-type="fk">CUSTOMER_ID</div><div class="field gamef" data-table="orders" data-type="other">ORDER_DATE</div></div>
@@ -114,8 +185,19 @@
 <section class="screen" id="s6"><div class="wrap">
 <div class="sectionhead"><div><div class="eyebrow">DESAFIO 5 · CRIAR · MISSÃO FINAL</div><h2>💀 Desafio Caveira: o banco é seu!</h2><p class="subtitle">A biblioteca perdeu partes de seu modelo. Complete as tabelas, descubra as PKs e conecte as FKs.</p></div></div>
 <div class="mission"><strong>📚 O problema:</strong> precisamos registrar <strong>quem pegou qual livro emprestado</strong> e <strong>quem reservou qual livro</strong>. Algumas colunas desapareceram. Você consegue reconstruir esse banco de dados?</div>
+<div class="sk-transition-backdrop" id="sk-transition" role="dialog" aria-modal="true" aria-labelledby="sk-transition-title" aria-describedby="sk-transition-desc" aria-hidden="true">
+  <div class="sk-transition-card">
+    <div class="sk-confetti" aria-hidden="true">🎉 💀</div>
+    <h2 id="sk-transition-title">Etapa concluída!</h2>
+    <p id="sk-transition-desc">Você avançou na missão.</p>
+    <span class="sk-next-name" id="sk-transition-next">Próxima etapa</span>
+    <p id="sk-transition-rule"></p>
+    <button type="button" class="cta" id="sk-transition-btn" onclick="skAdvance()">Iniciar próxima etapa →</button>
+  </div>
+</div>
+<div class="sk-stage-guide" id="sk-stage-guide" aria-live="polite">🧩 <strong>ETAPA 1 DE 4:</strong> Complete os seis campos ausentes. As regras só mudam quando você confirmar.</div>
 <div class="gamehud"><span class="hud" id="sk-stage">🧩 Etapa 1/3 · Completar tabelas</span><span class="hud" id="sk-count">✅ 0/6 campos</span><span class="hud" id="sk-score">⭐ 0 pontos</span></div>
-<div class="card" id="sk-instructions" style="margin-bottom:18px"><h3>1. Complete as tabelas</h3><p>Escolha um campo da lista abaixo e depois clique no espaço <strong>?</strong> da tabela onde ele deve ficar. Cada campo só pode ser usado uma vez.</p>
+<div class="card sk-current-stage" id="sk-instructions" style="margin-bottom:18px"><h3>1. Complete as tabelas</h3><p>Escolha um campo da lista abaixo e depois clique no espaço <strong>?</strong> da tabela onde ele deve ficar. Cada campo só pode ser usado uma vez.</p>
 <div class="tokens" id="sk-palette"><button class="token sk-token" data-id="readerpk" data-name="LEITOR_ID">LEITOR_ID</button><button class="token sk-token" data-id="bookpk" data-name="LIVRO_ID">LIVRO_ID</button><button class="token sk-token" data-id="borrowreader" data-name="LEITOR_ID">LEITOR_ID</button><button class="token sk-token" data-id="borrowbook" data-name="LIVRO_ID">LIVRO_ID</button><button class="token sk-token" data-id="resreader" data-name="LEITOR_ID">LEITOR_ID</button><button class="token sk-token" data-id="resbook" data-name="LIVRO_ID">LIVRO_ID</button><button class="token sk-token sk-decoy" data-id="name" data-name="NOME">NOME</button><button class="token sk-token sk-decoy" data-id="title" data-name="TITULO">TITULO</button><button class="token sk-token sk-decoy" data-id="email" data-name="EMAIL">EMAIL</button></div>
 <p style="color:var(--muted);margin:0;font-size:14px">Dica: um mesmo nome de campo pode aparecer em várias tabelas; são atributos distintos.</p></div>
 <div class="card" id="sk-part2" style="display:none;margin-top:20px"><h3>2. Identifique as chaves primárias 🔑</h3><p>Agora que as tabelas estão completas, clique no atributo que <strong>identifica unicamente cada registro</strong>. Encontre uma PK em cada tabela.</p><p id="sk-pkprogress" style="font-weight:800">🔑 0/4 chaves primárias encontradas</p></div>
@@ -201,43 +283,45 @@ function gameError(hint){errors++;lives=Math.max(0,lives-1);if(lives===0){lives=
 function updateGame(){
  document.getElementById('pts').textContent='⭐ Pontos: '+points;
  document.getElementById('lives').textContent='❤️ Vidas: '+lives;
- document.getElementById('d3part').textContent=gamePart==='pk'?'🔑 Parte 1 de 2 · Descobrir PK':'🔗 Parte 2 de 2 · Relacionar FK';
- document.getElementById('conn').textContent=gamePart==='pk'?'🔑 PK encontradas: '+pkFound+'/4':'🔗 Conexões: '+connections+'/3';
- document.getElementById('phase').textContent=gamePart==='pk'?'📍 Tabela: '+Math.min(pkFound+1,4)+'/4':'📍 Ligação: '+Math.min(connections+1,3)+'/3';
+ document.getElementById('d3part').textContent=gamePart==='pk'?'🔑 Parte 1 de 2 · Descobrir PK':gamePart==='transition'?'✅ Parte 1 concluída · Prepare-se para a Parte 2':'🔗 Parte 2 de 2 · Relacionar FK';
+ document.getElementById('conn').textContent=gamePart!=='fk'?'🔑 PK encontradas: '+pkFound+'/4':'🔗 Conexões: '+connections+'/3';
+ document.getElementById('phase').textContent=gamePart==='pk'?'📍 Tabela: '+Math.min(pkFound+1,4)+'/4':gamePart==='transition'?'🏁 Parte 1: 4/4':'🔗 Restauradas: '+connections+'/3';
  if(gamePart==='pk'){
   let t=pkTables[pkFound];let label={customers:'CUSTOMERS',orders:'ORDERS',products:'PRODUCTS',order_items:'ORDER_ITEMS'}[t];
   document.getElementById('gamePrompt').innerHTML='Selecione o atributo que identifica de forma única cada registro da tabela <strong>'+label+'</strong>. Cada acerto vale 25 pontos.';
+ }else if(gamePart==='transition'){
+  document.getElementById('gamePrompt').textContent='As quatro chaves primárias foram identificadas. Clique em “Iniciar Parte 2” para começar os relacionamentos.';
  }else if(connections<3){
-  let pair=fkPairs[connections];
-  document.getElementById('gamePrompt').innerHTML='Selecione a <strong>chave estrangeira (FK)</strong> em <code>'+pair.from.split('.')[0]+'</code> e depois a <strong>PK correspondente</strong>. Conexão '+(connections+1)+' de 3. Cada acerto vale 100 pontos.';
+  document.getElementById('gamePrompt').innerHTML='Escolha <strong>qualquer chave estrangeira (FK)</strong> disponível e, em seguida, clique na <strong>PK correspondente</strong>. Você pode fazer as conexões <strong>em qualquer ordem</strong>. Já restauradas: <strong>'+connections+'/3</strong>. Cada acerto vale 100 pontos.';
  }else document.getElementById('gamePrompt').textContent='Agora verifique se uma referência a um produto inexistente é válida.';
  document.querySelectorAll('.gamef').forEach(el=>{
-  const enabled=gamePart==='pk'?(el.dataset.table===pkTables[pkFound]):(connections<3 && !el.classList.contains('linked') && (el.dataset.type==='pk'||el.dataset.type==='fk'));
+  const enabled=gamePart==='pk'?(el.dataset.table===pkTables[pkFound]):(gamePart==='fk' && connections<3 && !el.classList.contains('linked') && (el.dataset.type==='pk'||el.dataset.type==='fk'));
   el.classList.toggle('inactive',!enabled);
   el.setAttribute('aria-disabled',String(!enabled));el.setAttribute('tabindex',enabled?'0':'-1');
  });
 }
 function chooseGame(el){
- if(el.classList.contains('inactive'))return;
+ if(el.classList.contains('inactive')||gamePart==='transition')return;
  if(gamePart==='pk'){
   if(el.dataset.type==='pk'){
    el.classList.add('discovered-pk');el.setAttribute('aria-label',el.textContent.trim()+' chave primária');pkFound++;points+=25;
    gameFeedback(true,'<strong>✅ PK identificada! +25 pontos.</strong> '+el.dataset.table.toUpperCase()+'.'+el.textContent.trim()+' identifica unicamente cada registro.');
-   if(pkFound===4){gamePart='fk';phase=1;gameFeedback(true,'<strong>🔑 Quatro PK identificadas! +100 pontos.</strong> Agora vem a Parte 2: encontre as três FKs que conectam as tabelas. Clique primeiro na FK e depois na PK relacionada.');document.getElementById('gameMission').querySelector('strong').textContent='PARTE 2 — RESTAURE AS CONEXÕES 🔗'}
+   if(pkFound===4){gamePart='transition';phase=1;document.getElementById('d3transition').classList.add('show');document.getElementById('d3transition').setAttribute('aria-hidden','false');document.getElementById('d3-stage-guide').textContent='✅ PARTE 1 CONCLUÍDA! Confirme no painel para iniciar a Parte 2.';document.getElementById('d3-transition-btn').focus();document.getElementById('gmsg').className='feedback';document.getElementById('gameMission').querySelector('strong').textContent='✅ PARTE 1 CONCLUÍDA — PREPARE-SE PARA A PARTE 2';}
   }else gameError('Uma PK deve distinguir cada linha da tabela. Qual atributo representa o identificador desse registro?');
   updateGame();return;
  }
  if(!gameSel){if(el.dataset.type!=='fk'){gameError('Nesta etapa, comece selecionando uma chave estrangeira (FK).');return}gameSel=el;el.classList.add('selected');gameFeedback(true,'<strong>🔗 FK selecionada.</strong> Agora clique na chave primária da tabela referenciada.');return}
  const a=gameSel,b=el;gameSel.classList.remove('selected');gameSel=null;
  if(a===b)return;
- const pair=fkPairs[connections];
- const ok=a.dataset.type==='fk'&&b.dataset.type==='pk'&&a.dataset.key===b.dataset.key&&a.dataset.key===pair.key;
- if(ok){a.classList.add('linked');b.classList.add('linked');connections++;points+=100;gameFeedback(true,'<strong>✅ Conexão '+connections+'/3 restaurada! +100 pontos.</strong> <code>'+pair.from+'</code> → <code>'+pair.to+'</code>.');if(connections===3){document.getElementById('gbonus').style.display='block';gameFeedback(true,'<strong>🏆 Três conexões restauradas!</strong> Responda à questão bônus de integridade referencial.')}updateGame()}
- else gameError('Compare os atributos: a FK deve apontar para a PK que identifica o mesmo tipo de registro. Siga a conexão '+(connections+1)+' de 3.');
+ const pair=fkPairs.find(item=>item.key===a.dataset.key);
+ const ok=a.dataset.type==='fk'&&b.dataset.type==='pk'&&a.dataset.key===b.dataset.key&&!!pair;
+ if(ok){a.classList.add('linked');b.classList.add('linked');connections++;points+=100;gameFeedback(true,'<strong>✅ Conexão restaurada! +100 pontos. ('+connections+'/3)</strong> <code>'+pair.from+'</code> → <code>'+pair.to+'</code>.');if(connections===3){document.getElementById('gbonus').style.display='block';gameFeedback(true,'<strong>🏆 Três conexões restauradas!</strong> Responda à questão bônus de integridade referencial.')}updateGame()}
+ else gameError('Compare os atributos: a FK deve apontar para a PK correspondente. As três conexões podem ser feitas em qualquer ordem.');
 }
+function startD3Part2(){if(gamePart!=='transition')return;gamePart='fk';document.getElementById('d3transition').classList.remove('show');document.getElementById('d3transition').setAttribute('aria-hidden','true');document.getElementById('d3-stage-guide').textContent='🔗 PARTE 2 DE 2: Conecte uma FK à PK correspondente. Escolha a ordem livremente.';document.getElementById('gameMission').querySelector('strong').textContent='PARTE 2 — RESTAURE AS CONEXÕES 🔗';gameFeedback(true,'<strong>🔗 Parte 2 iniciada!</strong> Escolha qualquer FK disponível e conecte-a à PK correspondente, na ordem que preferir.');updateGame()}
 document.querySelectorAll('.gamef').forEach(el=>{el.setAttribute('role','button');el.onclick=()=>chooseGame(el);el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();chooseGame(el)}}});
 function bonus(ok){if(ok){document.getElementById('gdone').classList.add('show');document.getElementById('finalscore').textContent='Pontuação final: '+points+' pontos.';document.getElementById('gnext').style.display='inline-flex';document.getElementById('gbonus').style.display='none'}else gameError('Uma FK pode apontar para um registro que não existe na tabela referenciada?')}
-function resetGame(){gameSel=null;connections=0;points=0;lives=3;phase=1;pkFound=0;gamePart='pk';errors=0;document.getElementById('gameMission').querySelector('strong').textContent='PARTE 1 — ENCONTRE AS CHAVES PRIMÁRIAS 🔑';document.querySelectorAll('.gamef').forEach(el=>el.classList.remove('selected','linked','discovered-pk'));document.getElementById('gmsg').className='feedback';document.getElementById('gbonus').style.display='none';document.getElementById('gdone').classList.remove('show');document.getElementById('gnext').style.display='none';updateGame()}
+function resetGame(){gameSel=null;connections=0;points=0;lives=3;phase=1;pkFound=0;gamePart='pk';errors=0;document.getElementById('gameMission').querySelector('strong').textContent='PARTE 1 — ENCONTRE AS CHAVES PRIMÁRIAS 🔑';document.getElementById('d3transition').classList.remove('show');document.getElementById('d3transition').setAttribute('aria-hidden','true');document.getElementById('d3-stage-guide').textContent='🔑 PARTE 1 DE 2: Descubra as quatro chaves primárias. A próxima parte só começa quando você confirmar.';document.querySelectorAll('.gamef').forEach(el=>el.classList.remove('selected','linked','discovered-pk'));document.getElementById('gmsg').className='feedback';document.getElementById('gbonus').style.display='none';document.getElementById('gdone').classList.remove('show');document.getElementById('gnext').style.display='none';updateGame()}
 updateGame();
 function d4(restructure,button){
  document.querySelectorAll('.d4decision').forEach(el=>el.classList.remove('selected'));
@@ -266,7 +350,44 @@ const skPkKeys=['readerpk','bookpk','borrowpk','respk'];
 const skFkToPk={borrowreader:'readerpk',borrowbook:'bookpk',resreader:'readerpk',resbook:'bookpk'};
 const skSlotLabels={readerpk:'LEITOR_ID',bookpk:'LIVRO_ID',borrowreader:'LEITOR_ID',borrowbook:'LIVRO_ID',resreader:'LEITOR_ID',resbook:'LIVRO_ID'};
 function skMessage(msg,ok=false){let el=document.getElementById('sk-feedback');el.className='feedback '+(ok?'ok':'no')+' show';el.textContent=msg;}
-function skUpdate(){document.getElementById('sk-stage').textContent=['','🧩 Etapa 1/3 · Completar tabelas','🔑 Etapa 2/3 · Encontrar PKs','🔗 Etapa 3/3 · Conectar FKs','🏆 Teste final'][skStep];document.getElementById('sk-count').textContent=skStep===1?'✅ '+skFilled.size+'/6 campos':skStep===2?'🔑 '+skFoundPK.size+'/4 PKs':'🔗 '+skFoundFK.size+'/4 FKs';document.getElementById('sk-score').textContent='⭐ '+skPoints+' pontos';}
+let skPendingStep=0;
+const skTransitionText={
+  2:{title:'✅ PARTE 1 CONCLUÍDA!',description:'Você completou os seis campos das tabelas. Excelente trabalho!',next:'🔑 ETAPA 2 — DESCUBRA AS CHAVES PRIMÁRIAS',rule:'Nova regra: clique em UMA chave primária (PK) em cada uma das quatro tabelas. As tabelas não precisam ser preenchidas novamente.',button:'🔑 Iniciar Etapa 2'},
+  3:{title:'🔑 ETAPA 2 CONCLUÍDA!',description:'Você encontrou as quatro chaves primárias!',next:'🔗 ETAPA 3 — RESTAURE AS CONEXÕES',rule:'Nova regra: clique primeiro em uma chave estrangeira (FK) em EMPRESTIMOS ou RESERVAS e depois na PK correspondente. Faça quatro conexões, em qualquer ordem.',button:'🔗 Iniciar Etapa 3'},
+  4:{title:'🔗 ETAPA 3 CONCLUÍDA!',description:'Você restaurou as quatro conexões entre as tabelas!',next:'🧪 ETAPA 4 — TESTE SEU MODELO',rule:'Nova regra: analise os códigos fornecidos e descubra quem está com qual livro. Não é necessário clicar nas tabelas.',button:'🧪 Iniciar Teste Final'}
+};
+function skShowTransition(nextStep){
+  skPendingStep=nextStep;
+  const t=skTransitionText[nextStep];
+  document.getElementById('sk-transition-title').textContent=t.title;
+  document.getElementById('sk-transition-desc').textContent=t.description;
+  document.getElementById('sk-transition-next').textContent=t.next;
+  document.getElementById('sk-transition-rule').textContent=t.rule;
+  document.getElementById('sk-transition-btn').textContent=t.button+' →';
+  const dialog=document.getElementById('sk-transition');
+  dialog.classList.add('show');dialog.setAttribute('aria-hidden','false');
+  document.getElementById('sk-transition-btn').focus();
+}
+function skAdvance(){
+  if(!skPendingStep)return;
+  const nextStep=skPendingStep;skPendingStep=0;skStep=nextStep;
+  const dialog=document.getElementById('sk-transition');
+  dialog.classList.remove('show');dialog.setAttribute('aria-hidden','true');
+  for(const id of ['sk-instructions','sk-part2','sk-part3','sk-test'])document.getElementById(id).style.display='none';
+  const activeId={1:'sk-instructions',2:'sk-part2',3:'sk-part3',4:'sk-test'}[skStep];
+  document.getElementById(activeId).style.display='block';
+  if(skStep===2)document.querySelectorAll('.sk-field').forEach(x=>{x.style.cursor='pointer';x.setAttribute('role','button');x.setAttribute('tabindex','0')});
+  const guides={1:'🧩 ETAPA 1 DE 4: Complete os campos ausentes.',2:'🔑 ETAPA 2 DE 4: Identifique uma PK em cada tabela.',3:'🔗 ETAPA 3 DE 4: Conecte cada FK à PK correspondente, em qualquer ordem.',4:'🧪 ETAPA 4 DE 4: Use os dados para responder à pergunta final.'};
+  document.getElementById('sk-stage-guide').textContent=guides[skStep];
+  for(const el of document.querySelectorAll('#s6 .sk-current-stage'))el.classList.remove('sk-current-stage');
+  document.getElementById(activeId).classList.add('sk-current-stage');
+  skUpdate();
+  document.getElementById(activeId).scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById(activeId).setAttribute('tabindex','-1');
+  document.getElementById(activeId).focus({preventScroll:true});
+  skMessage('Nova etapa iniciada: '+guides[skStep],true);
+}
+function skUpdate(){document.getElementById('sk-stage').textContent=['','🧩 Etapa 1/4 · Completar campos','🔑 Etapa 2/4 · Identificar PKs','🔗 Etapa 3/4 · Conectar FKs','🧪 Etapa 4/4 · Testar modelo'][skStep];document.getElementById('sk-count').textContent=skStep===1?'✅ '+skFilled.size+'/6 campos':skStep===2?'🔑 '+skFoundPK.size+'/4 PKs':'🔗 '+skFoundFK.size+'/4 FKs';document.getElementById('sk-score').textContent='⭐ '+skPoints+' pontos';}
 // Embaralha visualmente os campos do Desafio Caveira a cada abertura da pagina.
 // Mantem data-id e data-name intactos para preservar validacao e pontuacao.
 (function embaralharCamposCaveira(){
@@ -279,12 +400,12 @@ function skUpdate(){document.getElementById('sk-stage').textContent=['','🧩 Et
  }
  palette.replaceChildren(...fields);
 })();
-function skChooseToken(el){if(skStep!==1||el.classList.contains('used'))return;document.querySelectorAll('.sk-token').forEach(x=>x.classList.remove('selected'));skPicked=el;el.classList.add('selected');skMessage('Agora clique em um campo ausente da tabela para colocar '+el.dataset.name+'.',true);}
-function skPickField(el){let key=el.dataset.slot||el.dataset.col;if(skStep===1){if(!el.classList.contains('sk-slot')||skFilled.has(key))return;if(!skPicked){skMessage('Escolha primeiro um campo na lista abaixo das instruções.');return;}if(skPicked.dataset.name!==skSlotLabels[key]){skMessage('Ainda não corresponde a este espaço. Pense na entidade representada pela tabela e tente novamente.');return;}el.textContent=skSlotLabels[key];el.classList.remove('sk-slot');el.classList.add('sk-filled');el.setAttribute('data-col',key);skPicked.classList.remove('selected');skPicked.classList.add('used');skPicked.disabled=true;skPicked=null;skFilled.add(key);skPoints+=10;skUpdate();skMessage('Campo colocado corretamente!',true);if(skFilled.size===6){skStep=2;document.getElementById('sk-instructions').style.display='none';document.getElementById('sk-part2').style.display='block';document.querySelectorAll('.sk-field').forEach(x=>{x.style.cursor='pointer';x.setAttribute('role','button');x.setAttribute('tabindex','0')});skUpdate();skMessage('Tabelas completas! Agora identifique uma chave primária em cada tabela.',true)}return;}
-if(skStep===2){if(skPkKeys.includes(key)){if(skFoundPK.has(key))return;skFoundPK.add(key);el.classList.add('discovered-pk','correct');el.textContent=el.textContent+' 🔑';skPoints+=25;document.getElementById('sk-pkprogress').textContent='🔑 '+skFoundPK.size+'/4 chaves primárias encontradas';skMessage('Boa! Esta coluna identifica unicamente os registros da tabela.',true);if(skFoundPK.size===4){skStep=3;document.getElementById('sk-part2').style.display='none';document.getElementById('sk-part3').style.display='block';skMessage('PKs encontradas! Agora conecte as chaves estrangeiras às chaves primárias correspondentes.',true)}skUpdate()}else skMessage('Este campo não identifica unicamente cada registro. Observe os identificadores da tabela.');return;}
-if(skStep===3){if(skFoundFK.has(key))return;if(skFirstFK===null){if(!(key in skFkToPk)){skMessage('Comece selecionando um campo que faça referência a outra tabela, em EMPRESTIMOS ou RESERVAS.');return;}skFirstFK=key;el.classList.add('selected');skMessage('Agora selecione a PK da tabela referenciada.',true);return;}let expected=skFkToPk[skFirstFK];let first=document.querySelector('.sk-field[data-col="'+skFirstFK+'"]');if(first)first.classList.remove('selected');if(key===expected){skFoundFK.add(skFirstFK);if(first){first.classList.add('linked');first.textContent=first.textContent+' 🔗 FK';}skPoints+=30;skMessage('Conexão correta! A FK referencia a PK da tabela relacionada.',true);}else{skMessage('Esta não é a PK correspondente. Confira se a FK identifica um leitor ou um livro.');}skFirstFK=null;document.getElementById('sk-fkprogress').textContent='🔗 '+skFoundFK.size+'/4 conexões realizadas';if(skFoundFK.size===4){skStep=4;document.getElementById('sk-part3').style.display='none';document.getElementById('sk-test').style.display='block';skMessage('Quatro conexões criadas. Agora teste o modelo com os dados fornecidos.',true)}skUpdate();}}
-function skTest(ok){if(!ok){skMessage('Siga LEITOR_ID 201 até LEITORES e LIVRO_ID 302 até LIVROS.');return;}document.getElementById('sk-test').style.display='none';document.getElementById('sk-done').classList.add('show');document.getElementById('bnext').style.display='inline-flex';skPoints+=50;document.getElementById('sk-score').textContent='⭐ '+skPoints+' pontos';skMessage('Resposta correta! Você reconstruiu o banco e comprovou os relacionamentos.',true);}
-function skReset(){skPicked=null;skFilled.clear();skFoundPK.clear();skFoundFK.clear();skFirstFK=null;skPoints=0;skStep=1;document.querySelectorAll('.sk-token').forEach(el=>{el.classList.remove('selected','used');el.disabled=false});document.querySelectorAll('.sk-field').forEach(el=>{let key=el.dataset.slot||el.dataset.col;el.classList.remove('selected','linked','discovered-pk','correct','sk-filled');if(skSlotLabels[key]){el.classList.add('sk-slot');el.textContent='❔ Campo ausente';el.removeAttribute('data-col');}else{el.textContent=el.textContent.replace(/ 🔑| 🔗 FK/g,'');}});document.getElementById('sk-instructions').style.display='block';document.getElementById('sk-part2').style.display='none';document.getElementById('sk-part3').style.display='none';document.getElementById('sk-test').style.display='none';document.getElementById('sk-done').classList.remove('show');document.getElementById('bnext').style.display='none';document.getElementById('sk-feedback').className='feedback';document.getElementById('sk-pkprogress').textContent='🔑 0/4 chaves primárias encontradas';document.getElementById('sk-fkprogress').textContent='🔗 0/4 conexões realizadas';skUpdate();}
+function skChooseToken(el){if(skPendingStep)return;if(skStep!==1||el.classList.contains('used'))return;document.querySelectorAll('.sk-token').forEach(x=>x.classList.remove('selected'));skPicked=el;el.classList.add('selected');skMessage('Agora clique em um campo ausente da tabela para colocar '+el.dataset.name+'.',true);}
+function skPickField(el){if(skPendingStep)return;let key=el.dataset.slot||el.dataset.col;if(skStep===1){if(!el.classList.contains('sk-slot')||skFilled.has(key))return;if(!skPicked){skMessage('Escolha primeiro um campo na lista abaixo das instruções.');return;}if(skPicked.dataset.name!==skSlotLabels[key]){skMessage('Ainda não corresponde a este espaço. Pense na entidade representada pela tabela e tente novamente.');return;}el.textContent=skSlotLabels[key];el.classList.remove('sk-slot');el.classList.add('sk-filled');el.setAttribute('data-col',key);skPicked.classList.remove('selected');skPicked.classList.add('used');skPicked.disabled=true;skPicked=null;skFilled.add(key);skPoints+=10;skUpdate();skMessage('Campo colocado corretamente!',true);if(skFilled.size===6){skShowTransition(2)}return;}
+if(skStep===2){if(skPkKeys.includes(key)){if(skFoundPK.has(key))return;skFoundPK.add(key);el.classList.add('discovered-pk','correct');el.textContent=el.textContent+' 🔑';skPoints+=25;document.getElementById('sk-pkprogress').textContent='🔑 '+skFoundPK.size+'/4 chaves primárias encontradas';skMessage('Boa! Esta coluna identifica unicamente os registros da tabela.',true);if(skFoundPK.size===4){skShowTransition(3)}skUpdate()}else skMessage('Este campo não identifica unicamente cada registro. Observe os identificadores da tabela.');return;}
+if(skStep===3){if(skFoundFK.has(key))return;if(skFirstFK===null){if(!(key in skFkToPk)){skMessage('Comece selecionando um campo que faça referência a outra tabela, em EMPRESTIMOS ou RESERVAS.');return;}skFirstFK=key;el.classList.add('selected');skMessage('Agora selecione a PK da tabela referenciada.',true);return;}let expected=skFkToPk[skFirstFK];let first=document.querySelector('.sk-field[data-col="'+skFirstFK+'"]');if(first)first.classList.remove('selected');if(key===expected){skFoundFK.add(skFirstFK);if(first){first.classList.add('linked');first.textContent=first.textContent+' 🔗 FK';}skPoints+=30;skMessage('Conexão correta! A FK referencia a PK da tabela relacionada.',true);}else{skMessage('Esta não é a PK correspondente. Confira se a FK identifica um leitor ou um livro.');}skFirstFK=null;document.getElementById('sk-fkprogress').textContent='🔗 '+skFoundFK.size+'/4 conexões realizadas';if(skFoundFK.size===4){skShowTransition(4)}skUpdate();}}
+function skTest(ok){if(skPendingStep)return;if(!ok){skMessage('Siga LEITOR_ID 201 até LEITORES e LIVRO_ID 302 até LIVROS.');return;}document.getElementById('sk-test').style.display='none';document.getElementById('sk-done').classList.add('show');document.getElementById('bnext').style.display='inline-flex';skPoints+=50;document.getElementById('sk-score').textContent='⭐ '+skPoints+' pontos';skMessage('Resposta correta! Você reconstruiu o banco e comprovou os relacionamentos.',true);}
+function skReset(){skPendingStep=0;document.getElementById('sk-transition').classList.remove('show');document.getElementById('sk-transition').setAttribute('aria-hidden','true');document.getElementById('sk-stage-guide').textContent='🧩 ETAPA 1 DE 4: Complete os seis campos ausentes. As regras só mudam quando você confirmar.';for(const el of document.querySelectorAll('#s6 .sk-current-stage'))el.classList.remove('sk-current-stage');document.getElementById('sk-instructions').classList.add('sk-current-stage');skPicked=null;skFilled.clear();skFoundPK.clear();skFoundFK.clear();skFirstFK=null;skPoints=0;skStep=1;document.querySelectorAll('.sk-token').forEach(el=>{el.classList.remove('selected','used');el.disabled=false});document.querySelectorAll('.sk-field').forEach(el=>{let key=el.dataset.slot||el.dataset.col;el.classList.remove('selected','linked','discovered-pk','correct','sk-filled');if(skSlotLabels[key]){el.classList.add('sk-slot');el.textContent='❔ Campo ausente';el.removeAttribute('data-col');}else{el.textContent=el.textContent.replace(/ 🔑| 🔗 FK/g,'');}});document.getElementById('sk-instructions').style.display='block';document.getElementById('sk-part2').style.display='none';document.getElementById('sk-part3').style.display='none';document.getElementById('sk-test').style.display='none';document.getElementById('sk-done').classList.remove('show');document.getElementById('bnext').style.display='none';document.getElementById('sk-feedback').className='feedback';document.getElementById('sk-pkprogress').textContent='🔑 0/4 chaves primárias encontradas';document.getElementById('sk-fkprogress').textContent='🔗 0/4 conexões realizadas';skUpdate();}
 document.querySelectorAll('.sk-token').forEach(el=>el.addEventListener('click',()=>skChooseToken(el)));
 document.querySelectorAll('.sk-field').forEach(el=>{el.addEventListener('click',()=>skPickField(el));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();skPickField(el)}})});
 skUpdate();

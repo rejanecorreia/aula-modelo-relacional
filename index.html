@@ -142,7 +142,6 @@ body{background:radial-gradient(circle at 92% 2%,rgba(83,221,249,.20),transparen
 <li>Hmelo-Silver, C. E.; Duncan, R. G.; Chinn, C. A. <em>Scaffolding and Achievement in Problem-Based and Inquiry Learning</em>. 2007.</li>
 <li>Wouters, P. et al. <em>A Meta-Analysis of the Cognitive and Motivational Effects of Serious Games</em>. 2013.</li>
 <li>Black, P.; Wiliam, D. <em>Assessment and Classroom Learning</em>. 1998.</li></ul>
-<p><strong>Tempo:</strong> o planejamento prevê 15 minutos totais e abertura de no máximo 2 minutos. As durações individuais deverão ser confirmadas em teste completo, considerando leitura, erros, feedback e fechamento; a missão da próxima aula não será executada durante esses 15 minutos.</p>
 </div></details></div></div></section>
 <section class="screen" id="s1"><div class="wrap"><div class="sectionhead"><div><div class="eyebrow">DESAFIO 1 · DESCOBRIR</div><h2>🔎 Encontre a conexão</h2><p class="subtitle">Observe os dados e descubra como registros de tabelas diferentes se relacionam.</p></div></div><div class="concept-intro"><div class="grid2"><div class="card"><h3>🔑 Chave Primária <span class="concept-tag">PK</span></h3><p>Identifica unicamente cada registro. Seus valores são únicos e não nulos.</p><p><strong>Pense na sua identidade:</strong> pessoas podem ter nomes iguais. O CPF é um exemplo de identificador único no cadastro de pessoas.</p><p><strong>Exemplo:</strong> <code>CPF</code> em <code>CLIENTES</code>. Nesta atividade, o CPF é a <strong>PK</strong> que identifica cada cliente; os números apresentados são fictícios.</p><p><strong>“Quem é esta pessoa?”</strong></p></div><div class="card"><h3>🔗 Chave Estrangeira <span class="concept-tag">FK</span></h3><p>Referencia uma chave da tabela relacionada.</p><p><strong>Exemplo:</strong> <code>CPF</code> em <code>PEDIDOS</code>.</p><p><strong>“De qual cliente é este pedido?”</strong></p></div></div><div class="integrity-intro"><strong>Integridade referencial</strong><div>Todo valor preenchido na chave estrangeira deve corresponder a uma chave existente na tabela referenciada.</div></div></div><div class="mission"><strong>Ana Lima realizou dois pedidos.</strong> Como o banco consegue descobrir quais pedidos pertencem a ela?<br/><small>Selecione o CPF de Ana na tabela CLIENTES e depois o CPF correspondente em PEDIDOS.</small></div><div class="grid2 relationship-board" id="d1-relationships"><div class="card"><h3>CLIENTES</h3><table class="dbtable"><thead><tr><th>CPF</th><th>NOME</th></tr></thead><tbody><tr><td class="clickable d1c" data-v="111.111.111-11">111.111.111-11</td><td>Ana Lima</td></tr><tr><td class="clickable d1c" data-v="222.222.222-22">222.222.222-22</td><td>Carlos Souza</td></tr><tr><td class="clickable d1c" data-v="333.333.333-33">333.333.333-33</td><td>Marina Alves</td></tr></tbody></table></div><div class="card"><h3>PEDIDOS</h3><table class="dbtable"><thead><tr><th>ID_PEDIDO</th><th>CPF</th><th>DATA_PEDIDO</th></tr></thead><tbody><tr><td>5001</td><td class="clickable d1o" data-v="111.111.111-11">111.111.111-11</td><td>10/09/2026</td></tr><tr><td>5002</td><td class="clickable d1o" data-v="222.222.222-22">222.222.222-22</td><td>11/09/2026</td></tr><tr><td>5003</td><td class="clickable d1o" data-v="111.111.111-11">111.111.111-11</td><td>12/09/2026</td></tr></tbody></table></div></div><div class="feedback ok" id="d1ok"><strong>🔗 Conexão encontrada!</strong><br/>O valor <strong>111.111.111-11</strong> aparece no registro de Ana Lima e também nos pedidos 5001 e 5003. É essa informação compartilhada que permite relacionar os registros.<br/><br/><strong>Mas por que essa conexão funciona?</strong></div><div class="feedback no" id="d1no"><strong>🔎 Observe novamente.</strong><br/>Procure uma informação associada a Ana que também apareça nos pedidos.</div><div class="actions"><button class="cta" id="d1next" onclick="go(2)" style="display:none">Investigar →</button></div></div></section>
 <section class="screen" id="s2"><div class="wrap"><div class="sectionhead"><div><div class="eyebrow">DESAFIO 2 · PESQUISA ORIENTADA · INVESTIGAR</div><h2>📚 Investigue na literatura</h2><p class="subtitle">Consulte a fonte para sustentar sua resposta.</p></div></div><div class="mission">Você encontrou uma conexão entre clientes e pedidos. Agora <strong>investigue na literatura</strong> por que essa relação é válida e identifique uma evidência que sustente sua resposta.</div><div class="sourcebox"><div class="source"><strong>📚 Fonte: Watt e Eng, <em>Database Design</em>, 2ª edição.</strong><p>Consulte diretamente os capítulos do livro para fundamentar sua resposta:</p>
@@ -179,33 +178,23 @@ body{background:radial-gradient(circle at 92% 2%,rgba(83,221,249,.20),transparen
 
 </div></section>
 <section class="screen" id="s5"><div class="wrap">
-<div class="sectionhead"><div><div class="eyebrow">DESAFIO 4 · ANALISAR E AVALIAR</div><h2>🤖 A IA modelou. Você decide.</h2><p class="subtitle">🎬 Cinema: um mesmo assento pode ser vendido para sessões diferentes. Será que a chave escolhida pela IA funciona?</p></div></div>
-<div class="mission"><strong>🎟️ O caso dos ingressos:</strong> o cinema precisa registrar as sessões e os assentos vendidos. Um assento pode ser utilizado novamente em outra sessão. <strong>A IA apresentou três tabelas e escolheu as chaves abaixo. Encontre o erro.</strong></div>
-<div class="grid2" style="align-items:start">
-<div class="card"><h3>🎥 SESSOES</h3><p style="font-size:13px;color:var(--muted)">Identifica cada exibição.</p><table class="dbtable"><thead><tr><th>ID_SESSAO 🔑 PK</th><th>FILME</th><th>HORARIO</th></tr></thead><tbody><tr><td>901</td><td>Aventura Espacial</td><td>18h</td></tr><tr><td>902</td><td>Aventura Espacial</td><td>21h</td></tr></tbody></table></div>
-<div class="card"><h3>💺 ASSENTOS</h3><p style="font-size:13px;color:var(--muted)">Assentos disponíveis na sala deste exemplo.</p><table class="dbtable"><thead><tr><th>COD_ASSENTO 🔑 PK</th><th>FILEIRA</th></tr></thead><tbody><tr><td>A10</td><td>A</td></tr><tr><td>B05</td><td>B</td></tr></tbody></table></div>
+<div class="sectionhead"><div><div class="eyebrow">DESAFIO 4 · ANALISAR E AVALIAR</div><h2>🤖 A IA modelou. Você decide.</h2><p class="subtitle">🎬 Cinema — descubra o erro e avalie duas soluções.</p></div></div>
+<div class="mission"><strong>🎟️ Missão rápida:</strong> a IA definiu <code>COD_ASSENTO</code> como <strong>PK de INGRESSOS</strong>. Analise os registros e selecione <strong>todas as correções válidas</strong>.</div>
+<div class="card" style="max-width:840px;margin:0 auto"><h3>🎟️ INGRESSOS — proposta da IA</h3>
+<table class="dbtable"><thead><tr><th>COD_ASSENTO 🔑 PK?</th><th>ID_SESSAO</th><th>DATA_VENDA</th></tr></thead><tbody><tr><td><strong>A10</strong></td><td>901</td><td>19/11/2026</td></tr><tr><td><strong>A10</strong></td><td>902</td><td>19/11/2026</td></tr><tr><td>B05</td><td>901</td><td>19/11/2026</td></tr></tbody></table>
+<p style="margin-bottom:0;color:var(--muted)">🤖 <strong>A IA afirma:</strong> “COD_ASSENTO identifica unicamente cada ingresso.”</p></div>
+<div class="card" style="max-width:840px;margin:16px auto 0"><h3>🧠 Quais soluções corrigem o erro da IA?</h3>
+<p>Marque <strong>todas as alternativas corretas</strong> e clique em <strong>Verificar</strong>.</p>
+<div class="choices" id="d4options">
+<label class="choice d4check"><input type="checkbox" value="A"/> A) Manter COD_ASSENTO como PK de INGRESSOS.</label>
+<label class="choice d4check"><input type="checkbox" value="B"/> B) Criar ID_INGRESSO como PK e garantir que o mesmo assento não seja vendido duas vezes na mesma sessão.</label>
+<label class="choice d4check"><input type="checkbox" value="C"/> C) Usar o nome do filme como PK de INGRESSOS.</label>
+<label class="choice d4check"><input type="checkbox" value="D"/> D) Usar PK composta por (ID_SESSAO, COD_ASSENTO).</label>
 </div>
-<div class="card" style="margin-top:18px"><h3>🎟️ INGRESSOS — proposta da IA</h3><p style="font-size:13px;color:var(--muted)">A IA marcou <code>COD_ASSENTO</code> como <strong>PK 🔑</strong> da tabela INGRESSOS.</p><table class="dbtable"><thead><tr><th>COD_ASSENTO 🔑 PK?</th><th>ID_SESSAO</th><th>DATA_VENDA</th></tr></thead><tbody><tr><td><strong>A10</strong></td><td>901</td><td>19/11/2026</td></tr><tr><td><strong>A10</strong></td><td>902</td><td>19/11/2026</td></tr><tr><td>B05</td><td>901</td><td>19/11/2026</td></tr></tbody></table></div>
-<div class="aiquote" style="margin-top:18px">🤖 “Escolhi <strong>COD_ASSENTO</strong> como chave primária de INGRESSOS porque cada assento tem uma identificação própria. Portanto, meu modelo está correto.”</div>
-<div class="card" style="margin-top:18px"><h3>1. Você concorda com a IA?</h3><div class="choices">
-<button class="choice d4decision" onclick="d4(false,this)">A) Sim. O código de um assento sempre identifica um ingresso de forma única.</button>
-<button class="choice d4decision" onclick="d4(true,this)">B) Não. O mesmo assento pode aparecer em ingressos de sessões diferentes.</button>
-<button class="choice d4decision" onclick="d4(false,this)">C) Não. Uma sessão de cinema não pode ter mais de um ingresso.</button>
-</div><div class="feedback no" id="d4hint" role="status"><strong>🔎 Pista:</strong> observe o assento A10 nas sessões 901 e 902. Uma PK de INGRESSOS pode se repetir?</div></div>
-<div class="card" id="d4reason" style="display:none;margin-top:18px"><h3>2. Qual correção atende ao problema?</h3><p>Há <strong>duas soluções válidas</strong>. Selecione uma delas para conferir o modelo revisado.</p><div class="choices">
-<button class="choice d4reasonchoice" onclick="d4Reason(false,this)">A) Manter COD_ASSENTO como PK e impedir a venda do assento em outras sessões.</button>
-<button class="choice d4reasonchoice" onclick="d4Reason('id',this)">B) Usar ID_INGRESSO como PK e ID_SESSAO e COD_ASSENTO como FKs, garantindo que o mesmo assento não seja vendido duas vezes na mesma sessão.</button>
-<button class="choice d4reasonchoice" onclick="d4Reason(false,this)">C) Utilizar o nome do filme como PK da tabela INGRESSOS.</button>
-<button class="choice d4reasonchoice" onclick="d4Reason('composta',this)">D) Definir uma PK composta por (ID_SESSAO, COD_ASSENTO), sendo ambos também FKs para suas tabelas de origem.</button>
-</div><div class="feedback no" id="d4reasonhint" role="status"><strong>🔎 Pista:</strong> como identificar uma venda sem repetir a PK? Pense em um ID próprio ou na combinação de sessão + assento.</div></div>
-<div class="card" id="d4diagram" style="display:none;margin-top:18px"><h3>🔗 Modelo revisado — veja os relacionamentos</h3><p id="d4-model-description" style="color:var(--muted)">O ingresso tem um identificador próprio e referencia uma sessão e um assento.</p>
-<div class="grid2 relationship-board" id="d4-relationships" style="grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
-<div class="node"><h3>🎥 SESSOES</h3><div class="field" id="d4-pk-customer">🔑 ID_SESSAO</div><div class="field">FILME</div></div>
-<div class="node"><h3>🎟️ INGRESSOS</h3><div class="field" id="d4-pk-ingresso">🔑 ID_INGRESSO</div><div class="field" id="d4-fk-customer">🔗 ID_SESSAO</div><div class="field" id="d4-fk-product">🔗 COD_ASSENTO</div></div>
-<div class="node"><h3>💺 ASSENTOS</h3><div class="field" id="d4-pk-product">🔑 COD_ASSENTO</div><div class="field">FILEIRA</div></div>
-</div><p class="rel-caption">As linhas azuis mostram as referências FK → PK.</p></div>
-<div class="feedback ok" id="d4ok" role="status"><strong>✅ Você identificou o erro da IA!</strong><br/>O código do assento pode se repetir em sessões diferentes, portanto <code>COD_ASSENTO</code> sozinho não é PK válida de INGRESSOS.<p id="d4-model-feedback"></p><p><strong>Veja acima os relacionamentos da solução escolhida.</strong></p></div>
-<div class="actions"><button class="cta danger" id="d4next" onclick="go(6)" style="display:none">💀 Aceitar o Desafio Caveira →</button></div>
+<div class="actions"><button type="button" class="cta" onclick="checkD4()">Verificar escolhas →</button></div>
+<div class="feedback no" id="d4hint" role="status">🔎 <strong>Observe:</strong> A10 aparece em duas sessões. A PK precisa identificar <em>o ingresso</em>, não apenas o assento.</div>
+<div class="feedback ok" id="d4ok" role="status"><strong>✅ Muito bem! B e D são válidas.</strong><br/>O mesmo assento pode ser vendido em sessões diferentes. Você pode usar <code>ID_INGRESSO</code> como PK com <code>UNIQUE(ID_SESSAO, COD_ASSENTO)</code>, ou usar a própria combinação <code>(ID_SESSAO, COD_ASSENTO)</code> como PK composta. Em ambos os casos, os campos de sessão e assento referenciam as respectivas tabelas.</div>
+<div class="actions"><button class="cta danger" id="d4next" onclick="go(6)" style="display:none">💀 Aceitar o Desafio Caveira →</button></div></div>
 </div></section>
 <section class="screen" id="s6"><div class="wrap">
 <div class="sectionhead"><div><div class="eyebrow">DESAFIO 5 · CRIAR · MISSÃO FINAL</div><h2>💀 Desafio Caveira: o banco é seu!</h2><p class="subtitle">A biblioteca perdeu partes de seu modelo. Monte as quatro tabelas do zero, descubra as PKs e conecte as FKs.</p></div></div>
@@ -366,33 +355,13 @@ document.querySelectorAll('.gamef').forEach(el=>{el.setAttribute('role','button'
 function bonus(ok){if(ok){document.getElementById('gdone').classList.add('show');document.getElementById('finalscore').textContent='Pontuação final: '+points+' pontos.';document.getElementById('gnext').style.display='inline-flex';document.getElementById('gbonus').style.display='none'}else gameError('Uma FK pode apontar para um registro que não existe na tabela referenciada?')}
 function resetGame(){gameSel=null;connections=0;points=0;lives=3;phase=1;pkFound=0;gamePart='pk';errors=0;document.getElementById('gameMission').querySelector('strong').textContent='PARTE 1 — ENCONTRE AS CHAVES PRIMÁRIAS 🔑';document.getElementById('d3transition').classList.remove('show');document.getElementById('d3transition').setAttribute('aria-hidden','true');document.getElementById('d3-stage-guide').textContent='🔑 PARTE 1 DE 2: Descubra as quatro chaves primárias. A próxima parte só começa quando você confirmar.';document.querySelectorAll('.gamef').forEach(el=>el.classList.remove('selected','linked','discovered-pk'));document.getElementById('gmsg').className='feedback';document.getElementById('gbonus').style.display='none';document.getElementById('gdone').classList.remove('show');document.getElementById('gnext').style.display='none';updateGame()}
 updateGame();
-function d4(restructure,button){
- document.querySelectorAll('.d4decision').forEach(el=>el.classList.remove('selected'));
- button.classList.add('selected');
- if(restructure){document.getElementById('d4hint').classList.remove('show');document.getElementById('d4reason').style.display='block';}
- else {document.getElementById('d4hint').classList.add('show');document.getElementById('d4reason').style.display='none';document.getElementById('d4ok').classList.remove('show');document.getElementById('d4next').style.display='none';d4ModelChoice=null;}
-}
-let d4ModelChoice=null;
-function d4Reason(mode,button){
- document.querySelectorAll('.d4reasonchoice').forEach(el=>el.classList.remove('selected','correct','d2-incorrect'));
- button.classList.add('selected');
- const ok=(mode==='id'||mode==='composta');
- d4ModelChoice=ok?mode:null;
- document.getElementById('d4reasonhint').classList.toggle('show',!ok);
- document.getElementById('d4ok').classList.toggle('show',ok);document.getElementById('d4next').style.display=ok?'inline-flex':'none';
- if(ok){
-   button.classList.add('correct');
-   const composite=mode==='composta';
-   document.getElementById('d4-pk-ingresso').hidden=composite;
-   document.getElementById('d4-fk-customer').textContent=composite?'🔑🔗 ID_SESSAO (PK + FK)':'🔗 ID_SESSAO (FK)';
-   document.getElementById('d4-fk-product').textContent=composite?'🔑🔗 COD_ASSENTO (PK + FK)':'🔗 COD_ASSENTO (FK)';
-   document.getElementById('d4-model-description').textContent=composite
-     ?'Chave primária composta: ID_SESSAO + COD_ASSENTO. Juntos identificam o ingresso, e cada campo também é uma FK.'
-     :'ID_INGRESSO identifica o ingresso; ID_SESSAO e COD_ASSENTO são FKs. A combinação sessão + assento deve ser única.';
-   document.getElementById('d4-model-feedback').innerHTML=composite
-     ?'<strong>Modelo com PK composta:</strong> (<code>ID_SESSAO</code>, <code>COD_ASSENTO</code>) identifica um ingresso por assento e sessão. Os dois campos também são FKs. Isso impede repetir o mesmo assento na mesma sessão.'
-     :'<strong>Modelo com ID próprio:</strong> <code>ID_INGRESSO</code> é a PK, e <code>ID_SESSAO</code> e <code>COD_ASSENTO</code> são FKs. Também é necessária uma restrição <code>UNIQUE(ID_SESSAO, COD_ASSENTO)</code> para impedir ingressos duplicados na mesma sessão.';
- }
+function checkD4(){
+ const chosen=[...document.querySelectorAll('#d4options input:checked')].map(el=>el.value).sort();
+ const ok=chosen.length===2 && chosen[0]==='B' && chosen[1]==='D';
+ document.querySelectorAll('#d4options .d4check').forEach(el=>{const checked=el.querySelector('input').checked;el.classList.toggle('correct',ok&&checked);el.classList.toggle('d2-incorrect',!ok&&checked);});
+ document.getElementById('d4hint').classList.toggle('show',!ok);
+ document.getElementById('d4ok').classList.toggle('show',ok);
+ document.getElementById('d4next').style.display=ok?'inline-flex':'none';
 }
 let skPicked=null,skFilled=new Set(),skFoundPK=new Set(),skFoundFK=new Set(),skFirstFK=null,skPoints=0,skStep=1;
 const skPkKeys=['readerpk','bookpk','borrowpk','respk'];
